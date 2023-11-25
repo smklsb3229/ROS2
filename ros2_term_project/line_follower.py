@@ -19,7 +19,7 @@ import sys
 
 class LineFollower(Node):
     def __init__(self, line_tracker: LineTracker):
-        super().__init__('line_follower1')
+        super().__init__('line_follower')
         self.line_tracker = line_tracker
         self.bridge = cv_bridge.CvBridge()
 
@@ -32,7 +32,7 @@ class LineFollower(Node):
         if self.car_choice == 'PR002':
             self._subscription = self.create_subscription(Image, '/camera2/image_raw', self.image_callback, 10)
             self._subscription2 = self.create_subscription(Image, '/camera1/image_raw', self.stop_line_callback, 10)
-            self._subscription3 = self.create_subscription(LaserScan, '/scan', self.lidar_callback,
+            self._subscription3 = self.create_subscription(LaserScan, '/pr002scan', self.lidar_callback,
                                                            10)
             self._publisher = self.create_publisher(Twist, '/PR002/cmd_demo', 10)
 
@@ -40,12 +40,9 @@ class LineFollower(Node):
         if self.car_choice == 'PR001':
             self._subscription4 = self.create_subscription(Image, '/camera4/image_raw', self.image_callback, 10)
             self._subscription5 = self.create_subscription(Image, '/camera3/image_raw', self.stop_line_callback, 10)
-            self._subscription6 = self.create_subscription(LaserScan, '/scan', self.lidar_callback,
+            self._subscription6 = self.create_subscription(LaserScan, '/pr001scan', self.lidar_callback,
                                                            10)
             self._publisher2 = self.create_publisher(Twist, '/PR001/cmd_demo', 10)
-
-        # self.lidar_subscription = self.create_subscription(LaserScan, '/scan', self.scan_callback, 10)
-        # self._publisher = self.create_publisher(Twist, 'start_car', 1)
 
         self.twist = Twist()
         self.twist.linear.x = 3.0
@@ -75,6 +72,7 @@ class LineFollower(Node):
             self.line_tracker.process(img)
 
         self.twist.angular.z = (-1) * self.line_tracker._delta / 250
+        # self.get_logger().info('angular.z = %f' % self.twist.angular.z)
 
         if self.car_choice == 'PR001':
             self._publisher2.publish(self.twist)
@@ -150,6 +148,7 @@ class LineFollower(Node):
                 self.stop()
                 time.sleep(3)
                 self.twist.linear.x = 2.7
+                self.get_logger().info('linear.x = %f' % self.twist.linear.x)
                 self.get_logger().info('count = %f' % self.count)
 
                 if self.car_choice == 'PR001':
@@ -164,6 +163,7 @@ class LineFollower(Node):
                 self.stop()
                 time.sleep(4)
                 self.twist.linear.x = 3.2
+                self.get_logger().info('linear.x = %f' % self.twist.linear.x)
                 self.get_logger().info('count = %f' % self.count)
 
                 if self.car_choice == 'PR001':

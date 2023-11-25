@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 
+
 class LineTracker:
     def __init__(self):
         self._delta = 0.0
@@ -14,8 +15,6 @@ class LineTracker:
         mask = cv2.inRange(hsv, lower_white, upper_white)
 
         h, w, d = img.shape
-        search_top = int(2 * h / 4)
-        search_bot = int(2 * h / 4 + 20)
 
         mask[0:h, 0:int(2 * w / 4)] = 0
         mask[0:h, int(2 * w / 4 + 25):w] = 0
@@ -43,9 +42,10 @@ class LineTracker:
         search_top = int(2 * h / 4)
         search_bot = int(2 * h / 4 + 20)
 
-        mask2[0:int(h / 2 - 45), 0:int(w)] = 0
-        mask2[0:h, int(w / 2 + 20):int(w)] = 0
-        mask2[int(8 * h / 10):h, 0:w] = 0
+        mask2[0:h, 0:int(2 * w / 4 - 9)] = 0
+        mask2[0:h, int(2 * w / 4 + 11):w] = 0
+        mask2[0:int(h / 2 + 5), int(w / 2 - 10):int(w / 2 + 10)] = 0
+        mask2[h:int(h / 2 - 20), int(w / 2 - 10):int(w / 2 + 10)] = 0
 
         M = cv2.moments(mask2)
         if M['m00'] > 0:

@@ -622,7 +622,7 @@
         </inertia>
         <mass>0.035</mass>
       </inertial>
-      <pose>2 -0.7 0.8 0 0.43 -1.57</pose>
+      <pose>2 -0.92 0.65 -0 0.43 -1.1</pose>
       <sensor name='camera4' type='camera'>
         <always_on>1</always_on>
         <visualize>1</visualize>
@@ -713,7 +713,7 @@
     </plugin>
 
         <!-- Hokuyo Laser -->
-        <link name="hokuyo_link">
+        <link name="hokuyo_link1">
             <pose>0.2 0 1.5 0 0 0.3</pose>
             <inertial>
                 <inertia>
@@ -742,7 +742,7 @@
                 </geometry>
             </visual>
 
-            <sensor name="laser" type="gpu_ray">
+            <sensor name="PR001laser" type="gpu_ray">
                 <pose>0.01 0 0.0175 0 -0 0</pose>
                 <ray>
                     <scan>
@@ -759,16 +759,15 @@
                     </range>
                 </ray>
 
-
-                <plugin name="laser" filename="libgazebo_ros_ray_sensor.so">
+                <plugin name="PR001_laser" filename="libgazebo_ros_ray_sensor.so">
                     <ros>
                         <!-- <namespace>test_cam</namespace> -->
                         <!-- remapping>out:=scan</remapping -->
-                        <remapping>~/out:=scan</remapping>
+                        <remapping>~/out:=pr001scan</remapping>
                         <!-- <remapping>camera_info:=camera_info_demo</remapping> -->
                     </ros>
 
-                    <frame_name>laser_frame</frame_name>
+                    <frame_name>laser_frame1</frame_name>
                     <output_type>sensor_msgs/LaserScan</output_type>
                 </plugin>
                 <always_on>1</always_on>
@@ -777,9 +776,9 @@
             </sensor>
         </link>
 
-        <joint name="hokuyo_joint" type="revolute">
+        <joint name="hokuyo_joint1" type="revolute">
             <parent>chassis</parent>
-            <child>hokuyo_link</child>
+            <child>hokuyo_link1</child>
             <axis>
                 <xyz>0 1 0</xyz>
                 <limit>

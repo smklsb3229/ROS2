@@ -6,6 +6,7 @@ from std_msgs.msg import String
 from geometry_msgs.msg import Twist
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QComboBox
 
+
 class CarSelector(Node):
     def __init__(self):
         super().__init__('car_selector')
@@ -20,6 +21,7 @@ class CarSelector(Node):
         twist.angular.z = 0.0
 
         self.publisher.publish(twist)
+
 
 class StartCarPublisher(Node):
     def __init__(self, car_id):
@@ -38,6 +40,7 @@ class StartCarPublisher(Node):
 
         with open('variable.txt', 'w') as f:
             f.write(str(msg.data))
+
 
 def selected_car():
     selected_car = comboBox.currentText()
